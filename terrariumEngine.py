@@ -1367,10 +1367,13 @@ class terrariumEngine(object):
         motd_data["uptime"] = terrariumUtils.format_uptime(tmp["uptime"])
         motd_data["system_load"] = str(tmp["load"]["absolute"])[1:-1]
         motd_data["system_load_alarm"] = tmp["load"]["absolute"][0] > 1.0
-
-        motd_data["cpu_temperature"] = f'{tmp["cpu_temperature"]} {self.units["temperature"]}'
-        motd_data["cpu_temperature_alarm"] = tmp["cpu_temperature"] > 50
-
+        if (self.units["temperature"] == "F"):
+            motd_data["cpu_temperature"] = f'{terrariumUtils.to_fahrenheit(tmp["cpu_temperature"])} {self.units["temperature"]}'
+            motd_data["cpu_temperature_alarm"] = terrariumUtils.to_fahrenheit(tmp["cpu_temperature"]) > terrariumUtils.to_fahrenheit(50)
+        else:
+            motd_data["cpu_temperature"] = f'{tmp["cpu_temperature"]} {self.units["temperature"]}'
+            motd_data["cpu_temperature_alarm"] = tmp["cpu_temperature"] > 50
+    
         motd_data["storage"] = (
             f'{terrariumUtils.format_filesize(tmp["storage"]["used"])}({ tmp["storage"]["used"] / tmp["storage"]["total"] * 100:.2f}%) used of total {terrariumUtils.format_filesize(tmp["storage"]["total"])}'
         )
