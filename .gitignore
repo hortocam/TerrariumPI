@@ -132,3 +132,4 @@ public
 .idea
 node_modules
 .gitversion
+/docs/assets/img/.DS_Store
